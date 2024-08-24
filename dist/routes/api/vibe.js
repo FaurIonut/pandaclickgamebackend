@@ -1,13 +1,4 @@
 "use strict";
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -15,28 +6,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const Vibe_1 = __importDefault(require("../../models/Vibe"));
 const router = express_1.default.Router();
-router.post("/add", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.post("/add", async (req, res) => {
     const vibe_new = new Vibe_1.default({
         username: req.body.username,
     });
     try {
-        let vibe_check = yield Vibe_1.default.findOne({ username: req.body.username });
+        let vibe_check = await Vibe_1.default.findOne({ username: req.body.username });
         if (vibe_check) {
             return res.json(vibe_check);
         }
         else {
-            yield vibe_new.save();
+            await vibe_new.save();
             res.json(vibe_new);
         }
     }
     catch (error) {
         res.status(400).json({ msg: error });
     }
-}));
-router.post("/updateVibe/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const vibe = yield Vibe_1.default.findOne({ username: req.params.username });
+});
+router.post("/updateVibe/:username", async (req, res) => {
+    const vibe = await Vibe_1.default.findOne({ username: req.params.username });
     if (vibe) {
-        const updated_vibe = yield Vibe_1.default.findOneAndUpdate({ username: req.params.username }, { vibe_date: req.body.vibe_date });
+        const updated_vibe = await Vibe_1.default.findOneAndUpdate({ username: req.params.username }, { vibe_date: req.body.vibe_date });
         const return_vibe = {
             _id: updated_vibe._id,
             username: updated_vibe.username,
@@ -48,11 +39,11 @@ router.post("/updateVibe/:username", (req, res) => __awaiter(void 0, void 0, voi
     else {
         return res.status(400).json({ msg: "You have no vibe" });
     }
-}));
-router.post("/updateMessage/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const vibe = yield Vibe_1.default.findOne({ username: req.params.username });
+});
+router.post("/updateMessage/:username", async (req, res) => {
+    const vibe = await Vibe_1.default.findOne({ username: req.params.username });
     if (vibe) {
-        const updated_vibe = yield Vibe_1.default.findOneAndUpdate({ username: req.params.username }, { message: req.body.message });
+        const updated_vibe = await Vibe_1.default.findOneAndUpdate({ username: req.params.username }, { message: req.body.message });
         const return_vibe = {
             _id: updated_vibe._id,
             username: updated_vibe.username,
@@ -64,15 +55,15 @@ router.post("/updateMessage/:username", (req, res) => __awaiter(void 0, void 0, 
     else {
         return res.status(400).json({ msg: "You have no vibe" });
     }
-}));
-router.post("/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let vibe = yield Vibe_1.default.find({ username: req.params.username });
+});
+router.post("/:username", async (req, res) => {
+    let vibe = await Vibe_1.default.find({ username: req.params.username });
     if (vibe) {
         res.json(vibe);
     }
     else {
         return res.status(400).json({ msg: "No vibe" });
     }
-}));
+});
 exports.default = router;
 //# sourceMappingURL=vibe.js.map

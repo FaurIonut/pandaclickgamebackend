@@ -1,3 +1,4 @@
+"use strict";
 // import multer from "multer";
 // import { findConfigurationByIp } from "../models/Surveillance";
 // const fs = require("fs");
