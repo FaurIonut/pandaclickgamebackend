@@ -21,4 +21,3 @@ const VibeSchema = new mongoose_1.Schema({
 });
 const Vibe = (0, mongoose_1.model)("Vibe", VibeSchema);
 exports.default = Vibe;
-//# sourceMappingURL=Vibe.js.map

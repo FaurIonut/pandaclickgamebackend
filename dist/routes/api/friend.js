@@ -35,4 +35,3 @@ router.post("/:username", async (req, res) => {
     }
 });
 exports.default = router;
-//# sourceMappingURL=friend.js.map

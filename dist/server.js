@@ -46,4 +46,3 @@ if (process.env.ENVIRONMENT === "PRODUCTION") {
 app.listen(port, () => {
     console.log(`Server is listening on ${port}`);
 });
-//# sourceMappingURL=server.js.map

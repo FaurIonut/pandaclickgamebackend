@@ -12,4 +12,3 @@ function default_1(req, res, next) {
         next();
     }
 }
-//# sourceMappingURL=requireAdmin.js.map

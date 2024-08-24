@@ -159,4 +159,3 @@ router.delete("/delete/:user_id", auth_1.default, async (req, res) => {
     res.json(req.params.user_id);
 });
 exports.default = router;
-//# sourceMappingURL=user.js.map

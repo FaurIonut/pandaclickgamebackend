@@ -66,4 +66,3 @@ router.post("/:username", async (req, res) => {
     }
 });
 exports.default = router;
-//# sourceMappingURL=vibe.js.map

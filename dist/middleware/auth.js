@@ -32,4 +32,3 @@ function default_1(req, res, next) {
         res.status(500).json({ msg: "Server Error" });
     }
 }
-//# sourceMappingURL=auth.js.map

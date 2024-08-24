@@ -37,4 +37,3 @@ const WalletSchema = new mongoose_1.Schema({
 });
 const Wallet = (0, mongoose_1.model)("Wallet", WalletSchema);
 exports.default = Wallet;
-//# sourceMappingURL=Wallet.js.map

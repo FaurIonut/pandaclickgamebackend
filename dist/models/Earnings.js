@@ -39,4 +39,3 @@ const EarningsSchema = new mongoose_1.Schema({
 });
 const Earnings = (0, mongoose_1.model)("Earnings", EarningsSchema);
 exports.default = Earnings;
-//# sourceMappingURL=Earnings.js.map

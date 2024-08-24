@@ -5,4 +5,3 @@ exports.default = {
     jwtSecret: "kut10developers",
     githubToken: "<yoursecrectaccesstoken>",
 };
-//# sourceMappingURL=index.js.map

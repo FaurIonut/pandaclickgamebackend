@@ -17,4 +17,3 @@ const WalletAddressSchema = new mongoose_1.Schema({
 });
 const WalletAddress = (0, mongoose_1.model)("WalletAddress", WalletAddressSchema);
 exports.default = WalletAddress;
-//# sourceMappingURL=WalletAddress.js.map

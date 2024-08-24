@@ -27,4 +27,3 @@ router.post("/add", async (req, res) => {
     }
 });
 exports.default = router;
-//# sourceMappingURL=walletAddress.js.map

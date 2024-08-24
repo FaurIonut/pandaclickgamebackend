@@ -202,4 +202,3 @@ router.delete("/delete/:username", async (req, res) => {
     res.json({ msg: "Delete Successfully" });
 });
 exports.default = router;
-//# sourceMappingURL=wallet.js.map

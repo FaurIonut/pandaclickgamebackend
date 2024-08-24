@@ -35,4 +35,3 @@ const findUserDataByEmail = async (email_f) => {
 };
 exports.findUserDataByEmail = findUserDataByEmail;
 exports.default = User;
-//# sourceMappingURL=User.js.map

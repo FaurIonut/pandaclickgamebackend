@@ -13,4 +13,3 @@ const FriendSchema = new mongoose_1.Schema({
 });
 const Friend = (0, mongoose_1.model)("Friend", FriendSchema);
 exports.default = Friend;
-//# sourceMappingURL=Friend.js.map
