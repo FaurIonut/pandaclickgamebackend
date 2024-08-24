@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.findUserDataByEmail = void 0;
 const mongoose_1 = require("mongoose");
 const bcryptjs_1 = require("bcryptjs");
+// Create the User schema
 const UserSchema = new mongoose_1.Schema({
     username: {
         type: String,
@@ -11,6 +12,7 @@ const UserSchema = new mongoose_1.Schema({
     email: {
         type: String,
         required: true,
+        unique: true, // Ensure email is unique
     },
     password: {
         type: String,
@@ -18,20 +20,26 @@ const UserSchema = new mongoose_1.Schema({
     },
     role: {
         type: String,
+        default: 'user', // Set a default role
     },
     status: {
         type: String,
+        default: 'active', // Set a default status
     },
     date: {
         type: Date,
-    }
+        default: Date.now, // Set a default date to now
+    },
 });
-UserSchema.methods.encryptPassword = (password) => (0, bcryptjs_1.hashSync)(password, (0, bcryptjs_1.genSaltSync)(10));
+// Add methods to the schema
+UserSchema.methods.encryptPassword = function (password) {
+    return (0, bcryptjs_1.hashSync)(password, (0, bcryptjs_1.genSaltSync)(10));
+};
+// Create the model from the schema
 const User = (0, mongoose_1.model)("User", UserSchema);
-const findUserDataByEmail = async (email_f) => {
-    return await User.find({
-        email: email_f,
-    });
+// Define a function to find users by email
+const findUserDataByEmail = async (email) => {
+    return User.find({ email }).exec();
 };
 exports.findUserDataByEmail = findUserDataByEmail;
 exports.default = User;

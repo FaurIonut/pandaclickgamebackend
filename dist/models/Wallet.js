@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const moment_1 = __importDefault(require("moment"));
+// Create the Wallet schema
 const WalletSchema = new mongoose_1.Schema({
     username: {
         type: String,
@@ -12,28 +13,29 @@ const WalletSchema = new mongoose_1.Schema({
     },
     balance: {
         type: Number,
-        default: 0
+        default: 0,
     },
     energy: {
         type: Number,
-        default: 1000
+        default: 1000,
     },
     full_energy: {
         type: Number,
-        default: 1
+        default: 1,
     },
     tap: {
         type: Number,
-        default: 1
+        default: 1,
     },
     limit: {
         type: Number,
-        default: 1000
+        default: 1000,
     },
     daily_coins: {
         type: Date,
-        default: (0, moment_1.default)()
+        default: () => (0, moment_1.default)().toDate(),
     },
 });
+// Create the model from the schema
 const Wallet = (0, mongoose_1.model)("Wallet", WalletSchema);
 exports.default = Wallet;
