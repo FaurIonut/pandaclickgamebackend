@@ -12,12 +12,12 @@ const VibeSchema = new mongoose_1.Schema({
         required: true,
     },
     message: {
-        type: Boolean,
-        default: true,
+        type: String, // Changed from Boolean to String for message content
+        required: true,
     },
     vibe_date: {
-        type: String,
-        default: () => (0, moment_1.default)().subtract(1, 'days').toISOString(),
+        type: Date,
+        default: () => (0, moment_1.default)().subtract(1, 'days').toDate(), // Changed toDate() for Date type
     },
 });
 // Create the model from the schema

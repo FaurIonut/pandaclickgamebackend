@@ -33,7 +33,7 @@ const WalletSchema = new mongoose_1.Schema({
     },
     daily_coins: {
         type: Date,
-        default: () => (0, moment_1.default)().toDate(),
+        default: () => (0, moment_1.default)().toDate(), // Ensure this returns a Date object
     },
 });
 // Create the model from the schema

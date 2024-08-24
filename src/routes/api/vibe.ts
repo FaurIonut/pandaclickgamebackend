@@ -1,5 +1,4 @@
 import express, { Router, Request, Response } from "express";
-import mongoose from "mongoose";
 import Vibe from "../../models/Vibe";
 
 const router: Router = express.Router();
@@ -20,48 +19,64 @@ router.post("/add", async (req: Request, res: Response) => {
     res.status(400).json({ msg: error });
   }
 });
+
 router.post("/updateVibe/:username", async (req: Request, res: Response) => {
   const vibe = await Vibe.findOne({ username: req.params.username });
   if (vibe) {
     const updated_vibe = await Vibe.findOneAndUpdate(
       { username: req.params.username },
-      { vibe_date: req.body.vibe_date }
+      { vibe_date: req.body.vibe_date },
+      { new: true } // Ensure the returned document is the updated one
     );
-    const return_vibe = {
-      _id: updated_vibe._id,
-      username: updated_vibe.username,
-      message: updated_vibe.message,
-      vibe_date: req.body.vibe_date
-    };
-    return res.status(200).json(return_vibe);
+
+    if (updated_vibe) {
+      const return_vibe = {
+        _id: updated_vibe._id,
+        username: updated_vibe.username,
+        message: updated_vibe.message,
+        vibe_date: updated_vibe.vibe_date
+      };
+      return res.status(200).json(return_vibe);
+    } else {
+      return res.status(400).json({ msg: "Failed to update vibe" });
+    }
   } else {
     return res.status(400).json({ msg: "You have no vibe" });
   }
 });
+
 router.post("/updateMessage/:username", async (req: Request, res: Response) => {
   const vibe = await Vibe.findOne({ username: req.params.username });
   if (vibe) {
     const updated_vibe = await Vibe.findOneAndUpdate(
-        {username: req.params.username},
-        {message: req.body.message}
+      { username: req.params.username },
+      { message: req.body.message },
+      { new: true } // Ensure the returned document is the updated one
     );
-    const return_vibe = {
+
+    if (updated_vibe) {
+      const return_vibe = {
         _id: updated_vibe._id,
         username: updated_vibe.username,
-        message: req.body.message,
+        message: updated_vibe.message,
         vibe_date: updated_vibe.vibe_date
-    };
-    return res.status(200).json(return_vibe);
+      };
+      return res.status(200).json(return_vibe);
+    } else {
+      return res.status(400).json({ msg: "Failed to update message" });
+    }
   } else {
     return res.status(400).json({ msg: "You have no vibe" });
   }
-})
+});
+
 router.post("/:username", async (req: Request, res: Response) => {
-    let vibe = await Vibe.find({ username: req.params.username });
-    if (vibe) {
-        res.json(vibe);
-    } else {
-        return res.status(400).json({ msg: "No vibe" });
-    }
-})
+  const vibe = await Vibe.find({ username: req.params.username });
+  if (vibe.length > 0) {
+    res.json(vibe);
+  } else {
+    return res.status(400).json({ msg: "No vibe" });
+  }
+});
+
 export default router;

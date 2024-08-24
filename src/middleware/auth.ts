@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import config from "../config";
-import User from "../models/User";
+import User, { IUser } from "../models/User";
 
 // Define the interface to extend the Request object
 interface AuthRequest extends Request {
-  user?: any; // Adjust this type as needed
+  user?: IUser; // Use IUser type for user object
 }
 
+// Middleware to verify JWT and attach user to request
 export default function (req: AuthRequest, res: Response, next: NextFunction) {
   const token = req.headers["x-auth-token"] as string | undefined;
   if (!token) {
@@ -22,8 +23,12 @@ export default function (req: AuthRequest, res: Response, next: NextFunction) {
       const decodedToken = decoded as jwt.JwtPayload;
       User.findById(decodedToken._id)
         .then((user) => {
-          req.user = user;
-          next();
+          if (user) {
+            req.user = user;
+            next();
+          } else {
+            return res.status(401).json({ msg: "User not found" });
+          }
         })
         .catch(() => {
           return res.status(401).json({ msg: "Token is not valid" });

@@ -59,5 +59,4 @@ UserSchema.statics.findUserDataByEmail = function(email: string): Promise<IUser[
 // Create the model from the schema
 const User: IUserModel = model<IUser, IUserModel>("User", UserSchema);
 
-export { IUser };
 export default User;
