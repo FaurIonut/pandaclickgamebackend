@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = default_1;
 exports.someRouteHandler = someRouteHandler;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const config_1 = __importDefault(require("../config"));
-const User_1 = __importDefault(require("../models/User"));
+const config_1 = __importDefault(require("../config")); // Ensure this path is correct
+const User_1 = __importDefault(require("../models/User")); // Ensure this path is correct
 function default_1(req, res, next) {
     const token = req.headers["x-auth-token"];
     if (!token) {
@@ -27,20 +27,24 @@ function default_1(req, res, next) {
             return res.status(401).json({ msg: "Token is not valid" });
         }
         else {
-            const decodedToken = decoded;
-            User_1.default.findById(decodedToken._id)
-                .then((user) => {
-                if (user) {
-                    req.user = user;
-                    next();
-                }
-                else {
-                    res.status(401).json({ msg: "User not found" });
-                }
-            })
-                .catch(() => {
+            if (decoded && decoded._id) {
+                User_1.default.findById(decoded._id)
+                    .then((user) => {
+                    if (user) {
+                        req.user = user;
+                        next();
+                    }
+                    else {
+                        res.status(401).json({ msg: "User not found" });
+                    }
+                })
+                    .catch(() => {
+                    return res.status(401).json({ msg: "Token is not valid" });
+                });
+            }
+            else {
                 return res.status(401).json({ msg: "Token is not valid" });
-            });
+            }
         }
     });
 }
