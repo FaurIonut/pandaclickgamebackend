@@ -4,8 +4,8 @@ import moment from "moment";
 // Define the IVibe interface extending Document
 export interface IVibe extends Document {
   username: string;
-  message: boolean;
-  vibe_date: string;
+  message: string; // Changed from boolean to string, assuming messages are text
+  vibe_date: Date; // Changed from string to Date
 }
 
 // Create the Vibe schema
@@ -15,12 +15,12 @@ const VibeSchema: Schema<IVibe> = new Schema({
     required: true,
   },
   message: {
-    type: Boolean,
-    default: true,
+    type: String, // Changed from Boolean to String for message content
+    required: true,
   },
   vibe_date: {
-    type: String,
-    default: () => moment().subtract(1, 'days').toISOString(),
+    type: Date,
+    default: () => moment().subtract(1, 'days').toDate(), // Changed toDate() for Date type
   },
 });
 

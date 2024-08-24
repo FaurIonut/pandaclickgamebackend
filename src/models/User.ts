@@ -13,7 +13,9 @@ export interface IUser extends Document {
 }
 
 // Define the IUserModel interface for the Mongoose model
-interface IUserModel extends Model<IUser> {}
+interface IUserModel extends Model<IUser> {
+  findUserDataByEmail: (email: string) => Promise<IUser[]>;
+}
 
 // Create the User schema
 const UserSchema: Schema<IUser> = new Schema({
@@ -49,24 +51,13 @@ UserSchema.methods.encryptPassword = function(password: string): string {
   return hashSync(password, genSaltSync(10));
 };
 
+// Add static methods to the schema
+UserSchema.statics.findUserDataByEmail = function(email: string): Promise<IUser[]> {
+  return this.find({ email }).exec();
+};
+
 // Create the model from the schema
 const User: IUserModel = model<IUser, IUserModel>("User", UserSchema);
 
-// Define the UserData interface
-interface UserData {
-  _id: ObjectId;
-  username: string;
-  email: string;
-  password: string;
-  role: string;
-  status: string;
-  date: Date;
-}
-
-// Define a function to find users by email
-const findUserDataByEmail = async (email: string): Promise<UserData[]> => {
-  return User.find({ email }).exec();
-};
-
-export { findUserDataByEmail };
+export { IUser };
 export default User;

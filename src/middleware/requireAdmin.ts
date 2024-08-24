@@ -2,16 +2,13 @@ import { Request, Response, NextFunction } from "express";
 
 interface AuthRequest extends Request {
   user?: {
-    role?: null
+    role?: string; // Use string instead of null
   };
 }
 
 export default function (req: AuthRequest, res: Response, next: NextFunction) {
-    if (!req.user) {
-        return res.status(401).json({ msg: "No token, authorization denied" });
-    } else if (req.user.role !== "admin") {
-        return res.status(400).json({ msg: "No token, authorization denied" });
-    } else {
-        next();
+    if (!req.user || req.user.role !== "admin") {
+        return res.status(403).json({ msg: "Access denied" }); // Changed status to 403 (Forbidden)
     }
+    next();
 }

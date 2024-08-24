@@ -9,7 +9,7 @@ export interface IWallet extends Document {
   full_energy: number;
   tap: number;
   limit: number;
-  daily_coins: Date;
+  daily_coins: Date; // Ensure this is a Date
 }
 
 // Create the Wallet schema
@@ -40,7 +40,7 @@ const WalletSchema: Schema<IWallet> = new Schema({
   },
   daily_coins: {
     type: Date,
-    default: () => moment().toDate(),
+    default: () => moment().toDate(), // Ensure this returns a Date object
   },
 });
 
