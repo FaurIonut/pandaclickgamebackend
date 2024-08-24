@@ -36,14 +36,20 @@ router.post("/add", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 router.post("/updateVibe/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const vibe = yield Vibe_1.default.findOne({ username: req.params.username });
     if (vibe) {
-        const updated_vibe = yield Vibe_1.default.findOneAndUpdate({ username: req.params.username }, { vibe_date: req.body.vibe_date });
-        const return_vibe = {
-            _id: updated_vibe._id,
-            username: updated_vibe.username,
-            message: updated_vibe.message,
-            vibe_date: req.body.vibe_date
-        };
-        return res.status(200).json(return_vibe);
+        const updated_vibe = yield Vibe_1.default.findOneAndUpdate({ username: req.params.username }, { vibe_date: req.body.vibe_date }, { new: true } // Ensure the returned document is the updated one
+        );
+        if (updated_vibe) {
+            const return_vibe = {
+                _id: updated_vibe._id,
+                username: updated_vibe.username,
+                message: updated_vibe.message,
+                vibe_date: updated_vibe.vibe_date
+            };
+            return res.status(200).json(return_vibe);
+        }
+        else {
+            return res.status(400).json({ msg: "Failed to update vibe" });
+        }
     }
     else {
         return res.status(400).json({ msg: "You have no vibe" });
@@ -52,22 +58,28 @@ router.post("/updateVibe/:username", (req, res) => __awaiter(void 0, void 0, voi
 router.post("/updateMessage/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const vibe = yield Vibe_1.default.findOne({ username: req.params.username });
     if (vibe) {
-        const updated_vibe = yield Vibe_1.default.findOneAndUpdate({ username: req.params.username }, { message: req.body.message });
-        const return_vibe = {
-            _id: updated_vibe._id,
-            username: updated_vibe.username,
-            message: req.body.message,
-            vibe_date: updated_vibe.vibe_date
-        };
-        return res.status(200).json(return_vibe);
+        const updated_vibe = yield Vibe_1.default.findOneAndUpdate({ username: req.params.username }, { message: req.body.message }, { new: true } // Ensure the returned document is the updated one
+        );
+        if (updated_vibe) {
+            const return_vibe = {
+                _id: updated_vibe._id,
+                username: updated_vibe.username,
+                message: updated_vibe.message,
+                vibe_date: updated_vibe.vibe_date
+            };
+            return res.status(200).json(return_vibe);
+        }
+        else {
+            return res.status(400).json({ msg: "Failed to update message" });
+        }
     }
     else {
         return res.status(400).json({ msg: "You have no vibe" });
     }
 }));
 router.post("/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let vibe = yield Vibe_1.default.find({ username: req.params.username });
-    if (vibe) {
+    const vibe = yield Vibe_1.default.find({ username: req.params.username });
+    if (vibe.length > 0) {
         res.json(vibe);
     }
     else {

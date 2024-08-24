@@ -37,21 +37,26 @@ router.post("/add", (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 }));
 router.post("/update/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const wallet = yield Wallet_1.default.findOne({ username: req.params.username });
-    console.log("requeset", req.body);
+    console.log("request", req.body);
     if (wallet) {
-        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { balance: req.body.balance, energy: req.body.energy });
-        //   console.log("--------------test----------",updated_wallet);
-        const return_wallet = {
-            _id: updated_wallet._id,
-            username: updated_wallet.username,
-            balance: req.body.balance,
-            energy: req.body.energy,
-            full_energy: updated_wallet.full_energy,
-            tap: updated_wallet.tap,
-            limit: updated_wallet.limit,
-            daily_coins: updated_wallet.daily_coins
-        };
-        return res.status(200).json(return_wallet);
+        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { balance: req.body.balance, energy: req.body.energy }, { new: true } // Ensure the returned document is the updated one
+        );
+        if (updated_wallet) {
+            const return_wallet = {
+                _id: updated_wallet._id,
+                username: updated_wallet.username,
+                balance: updated_wallet.balance,
+                energy: updated_wallet.energy,
+                full_energy: updated_wallet.full_energy,
+                tap: updated_wallet.tap,
+                limit: updated_wallet.limit,
+                daily_coins: updated_wallet.daily_coins
+            };
+            return res.status(200).json(return_wallet);
+        }
+        else {
+            return res.status(400).json({ msg: "Failed to update wallet" });
+        }
     }
     else {
         return res.status(400).json({ msg: "You have no permission" });
@@ -59,21 +64,26 @@ router.post("/update/:username", (req, res) => __awaiter(void 0, void 0, void 0,
 }));
 router.post("/updateEnergy/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const wallet = yield Wallet_1.default.findOne({ username: req.params.username });
-    console.log("requeset", req.body);
+    console.log("request", req.body);
     if (wallet) {
-        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { energy: req.body.energy });
-        //   console.log("--------------test----------",updated_wallet);
-        const return_wallet = {
-            _id: updated_wallet._id,
-            username: updated_wallet.username,
-            balance: updated_wallet.balance,
-            energy: req.body.energy,
-            full_energy: updated_wallet.full_energy,
-            tap: updated_wallet.tap,
-            limit: updated_wallet.limit,
-            daily_coins: updated_wallet.daily_coins
-        };
-        return res.status(200).json(return_wallet);
+        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { energy: req.body.energy }, { new: true } // Ensure the returned document is the updated one
+        );
+        if (updated_wallet) {
+            const return_wallet = {
+                _id: updated_wallet._id,
+                username: updated_wallet.username,
+                balance: updated_wallet.balance,
+                energy: updated_wallet.energy,
+                full_energy: updated_wallet.full_energy,
+                tap: updated_wallet.tap,
+                limit: updated_wallet.limit,
+                daily_coins: updated_wallet.daily_coins
+            };
+            return res.status(200).json(return_wallet);
+        }
+        else {
+            return res.status(400).json({ msg: "Failed to update energy" });
+        }
     }
     else {
         return res.status(400).json({ msg: "You have no permission" });
@@ -81,21 +91,26 @@ router.post("/updateEnergy/:username", (req, res) => __awaiter(void 0, void 0, v
 }));
 router.post("/updateTap/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const wallet = yield Wallet_1.default.findOne({ username: req.params.username });
-    console.log("requeset", req.body);
+    console.log("request", req.body);
     if (wallet) {
-        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { tap: req.body.tap });
-        //   console.log("--------------test----------",updated_wallet);
-        const return_wallet = {
-            _id: updated_wallet._id,
-            username: updated_wallet.username,
-            balance: updated_wallet.balance,
-            energy: updated_wallet.energy,
-            full_energy: updated_wallet.full_energy,
-            tap: req.body.tap,
-            limit: updated_wallet.limit,
-            daily_coins: updated_wallet.daily_coins
-        };
-        return res.status(200).json(return_wallet);
+        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { tap: req.body.tap }, { new: true } // Ensure the returned document is the updated one
+        );
+        if (updated_wallet) {
+            const return_wallet = {
+                _id: updated_wallet._id,
+                username: updated_wallet.username,
+                balance: updated_wallet.balance,
+                energy: updated_wallet.energy,
+                full_energy: updated_wallet.full_energy,
+                tap: updated_wallet.tap,
+                limit: updated_wallet.limit,
+                daily_coins: updated_wallet.daily_coins
+            };
+            return res.status(200).json(return_wallet);
+        }
+        else {
+            return res.status(400).json({ msg: "Failed to update tap" });
+        }
     }
     else {
         return res.status(400).json({ msg: "You have no permission" });
@@ -103,21 +118,26 @@ router.post("/updateTap/:username", (req, res) => __awaiter(void 0, void 0, void
 }));
 router.post("/updateLimit/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const wallet = yield Wallet_1.default.findOne({ username: req.params.username });
-    console.log("requeset", req.body);
+    console.log("request", req.body);
     if (wallet) {
-        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { limit: req.body.limit });
-        //   console.log("--------------test----------",updated_wallet);
-        const return_wallet = {
-            _id: updated_wallet._id,
-            username: updated_wallet.username,
-            balance: updated_wallet.balance,
-            energy: updated_wallet.energy,
-            full_energy: updated_wallet.full_energy,
-            tap: updated_wallet.tap,
-            limit: req.body.limit,
-            daily_coins: updated_wallet.daily_coins
-        };
-        return res.status(200).json(return_wallet);
+        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { limit: req.body.limit }, { new: true } // Ensure the returned document is the updated one
+        );
+        if (updated_wallet) {
+            const return_wallet = {
+                _id: updated_wallet._id,
+                username: updated_wallet.username,
+                balance: updated_wallet.balance,
+                energy: updated_wallet.energy,
+                full_energy: updated_wallet.full_energy,
+                tap: updated_wallet.tap,
+                limit: updated_wallet.limit,
+                daily_coins: updated_wallet.daily_coins
+            };
+            return res.status(200).json(return_wallet);
+        }
+        else {
+            return res.status(400).json({ msg: "Failed to update limit" });
+        }
     }
     else {
         return res.status(400).json({ msg: "You have no permission" });
@@ -125,21 +145,26 @@ router.post("/updateLimit/:username", (req, res) => __awaiter(void 0, void 0, vo
 }));
 router.post("/updateBalance/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const wallet = yield Wallet_1.default.findOne({ username: req.params.username });
-    console.log("requeset", req.body);
+    console.log("request", req.body);
     if (wallet) {
-        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { balance: req.body.balance });
-        //   console.log("--------------test----------",updated_wallet);
-        const return_wallet = {
-            _id: updated_wallet._id,
-            username: updated_wallet.username,
-            balance: req.body.balance,
-            energy: updated_wallet.energy,
-            full_energy: updated_wallet.full_energy,
-            tap: updated_wallet.tap,
-            limit: updated_wallet.limit,
-            daily_coins: updated_wallet.daily_coins
-        };
-        return res.status(200).json(return_wallet);
+        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { balance: req.body.balance }, { new: true } // Ensure the returned document is the updated one
+        );
+        if (updated_wallet) {
+            const return_wallet = {
+                _id: updated_wallet._id,
+                username: updated_wallet.username,
+                balance: updated_wallet.balance,
+                energy: updated_wallet.energy,
+                full_energy: updated_wallet.full_energy,
+                tap: updated_wallet.tap,
+                limit: updated_wallet.limit,
+                daily_coins: updated_wallet.daily_coins
+            };
+            return res.status(200).json(return_wallet);
+        }
+        else {
+            return res.status(400).json({ msg: "Failed to update balance" });
+        }
     }
     else {
         return res.status(400).json({ msg: "You have no permission" });
@@ -147,21 +172,26 @@ router.post("/updateBalance/:username", (req, res) => __awaiter(void 0, void 0, 
 }));
 router.post("/updateDailyCoins/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const wallet = yield Wallet_1.default.findOne({ username: req.params.username });
-    console.log("requeset", req.body);
+    console.log("request", req.body);
     if (wallet) {
-        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { daily_coins: req.body.daily_coins });
-        //   console.log("--------------test----------",updated_wallet);
-        const return_wallet = {
-            _id: updated_wallet._id,
-            username: updated_wallet.username,
-            balance: req.body.balance,
-            energy: updated_wallet.energy,
-            full_energy: updated_wallet.full_energy,
-            tap: updated_wallet.tap,
-            limit: updated_wallet.limit,
-            daily_coins: updated_wallet.daily_coins
-        };
-        return res.status(200).json(return_wallet);
+        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { daily_coins: req.body.daily_coins }, { new: true } // Ensure the returned document is the updated one
+        );
+        if (updated_wallet) {
+            const return_wallet = {
+                _id: updated_wallet._id,
+                username: updated_wallet.username,
+                balance: updated_wallet.balance,
+                energy: updated_wallet.energy,
+                full_energy: updated_wallet.full_energy,
+                tap: updated_wallet.tap,
+                limit: updated_wallet.limit,
+                daily_coins: updated_wallet.daily_coins
+            };
+            return res.status(200).json(return_wallet);
+        }
+        else {
+            return res.status(400).json({ msg: "Failed to update daily coins" });
+        }
     }
     else {
         return res.status(400).json({ msg: "You have no permission" });
@@ -169,32 +199,37 @@ router.post("/updateDailyCoins/:username", (req, res) => __awaiter(void 0, void 
 }));
 router.post("/updateFullEnergy/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const wallet = yield Wallet_1.default.findOne({ username: req.params.username });
-    console.log("requeset", req.body);
+    console.log("request", req.body);
     if (wallet) {
-        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { full_energy: req.body.full_energy });
-        //   console.log("--------------test----------",updated_wallet);
-        const return_wallet = {
-            _id: updated_wallet._id,
-            username: updated_wallet.username,
-            balance: updated_wallet.balance,
-            energy: updated_wallet.energy,
-            full_energy: req.body.full_energy,
-            tap: updated_wallet.tap,
-            limit: updated_wallet.limit,
-            daily_coins: updated_wallet.daily_coins
-        };
-        return res.status(200).json(return_wallet);
+        const updated_wallet = yield Wallet_1.default.findOneAndUpdate({ username: req.params.username }, { full_energy: req.body.full_energy }, { new: true } // Ensure the returned document is the updated one
+        );
+        if (updated_wallet) {
+            const return_wallet = {
+                _id: updated_wallet._id,
+                username: updated_wallet.username,
+                balance: updated_wallet.balance,
+                energy: updated_wallet.energy,
+                full_energy: updated_wallet.full_energy,
+                tap: updated_wallet.tap,
+                limit: updated_wallet.limit,
+                daily_coins: updated_wallet.daily_coins
+            };
+            return res.status(200).json(return_wallet);
+        }
+        else {
+            return res.status(400).json({ msg: "Failed to update full energy" });
+        }
     }
     else {
         return res.status(400).json({ msg: "You have no permission" });
     }
 }));
 router.get("/all", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const users = yield Wallet_1.default.find().limit(5).sort({ 'balance': -1 });
+    const users = yield Wallet_1.default.find().limit(5).sort({ balance: -1 });
     res.json(users);
 }));
 router.post("/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let user = yield Wallet_1.default.findOne({ username: req.params.username });
+    const user = yield Wallet_1.default.findOne({ username: req.params.username });
     if (user) {
         res.json(user);
     }
@@ -203,11 +238,11 @@ router.post("/:username", (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 }));
 router.delete("/delete/:username", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    let wallet = yield Wallet_1.default.findOne({ _id: req.params.username });
+    const wallet = yield Wallet_1.default.findOne({ username: req.params.username });
     if (!wallet) {
         return res.status(404).json({ msg: "User not found." });
     }
-    yield Wallet_1.default.deleteOne({ _id: req.params.username });
+    yield Wallet_1.default.deleteOne({ username: req.params.username });
     res.json({ msg: "Delete Successfully" });
 }));
 exports.default = router;
