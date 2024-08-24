@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
-import config from "../config";
-import User from "../models/User";
+import jwt, { JwtPayload } from "jsonwebtoken";
+import config from "../config"; // Ensure this path is correct
+import User from "../models/User"; // Ensure this path is correct
 
 // Define the interface to extend the Request object
 interface AuthRequest extends Request {
@@ -14,23 +14,26 @@ export default function (req: AuthRequest, res: Response, next: NextFunction) {
     return res.status(401).json({ msg: "No token, authorization denied" });
   }
 
-  jwt.verify(token, config.jwtSecret, (error, decoded) => {
+  jwt.verify(token, config.jwtSecret, (error: Error | null, decoded: JwtPayload | undefined) => {
     if (error) {
       return res.status(401).json({ msg: "Token is not valid" });
     } else {
-      const decodedToken = decoded as jwt.JwtPayload;
-      User.findById(decodedToken._id)
-        .then((user) => {
-          if (user) {
-            req.user = user;
-            next();
-          } else {
-            res.status(401).json({ msg: "User not found" });
-          }
-        })
-        .catch(() => {
-          return res.status(401).json({ msg: "Token is not valid" });
-        });
+      if (decoded && decoded._id) {
+        User.findById(decoded._id)
+          .then((user) => {
+            if (user) {
+              req.user = user;
+              next();
+            } else {
+              res.status(401).json({ msg: "User not found" });
+            }
+          })
+          .catch(() => {
+            return res.status(401).json({ msg: "Token is not valid" });
+          });
+      } else {
+        return res.status(401).json({ msg: "Token is not valid" });
+      }
     }
   });
 }
