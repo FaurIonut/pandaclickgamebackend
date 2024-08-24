@@ -1,7 +1,5 @@
 {
   "compilerOptions": {
-   
-   
     "target": "ES2020",
     "module": "commonjs",
     "outDir": "./dist",
@@ -11,16 +9,9 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./node_modules/@types"]
     "moduleResolution": "node",
-    "sourceMap": true,
-    
-    
-    
-    
-    
+    "typeRoots": ["./node_modules/@types"]
   },
-  "lib": ["es2020"]
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
 }
