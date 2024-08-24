@@ -3,30 +3,31 @@ import jwt from "jsonwebtoken";
 import config from "../config";
 import User from "../models/User";
 
+// Define the interface to extend the Request object
 interface AuthRequest extends Request {
-  user?: null;
+  user?: any; // Adjust this type as needed
 }
 
 export default function (req: AuthRequest, res: Response, next: NextFunction) {
-  const token = req.headers["x-auth-token"];
+  const token = req.headers["x-auth-token"] as string | undefined;
   if (!token) {
     return res.status(401).json({ msg: "No token, authorization denied" });
   }
-  try {
-    jwt.verify(token, config.jwtSecret, (error, decoded) => {
-      if (error) {
-        return res.status(401).json({ msg: "Token is not valid" });
-      } else {
-        User.findById(decoded._id).then((user: any) => {
+
+  jwt.verify(token, config.jwtSecret, (error, decoded) => {
+    if (error) {
+      return res.status(401).json({ msg: "Token is not valid" });
+    } else {
+      // Ensure decoded is typed correctly
+      const decodedToken = decoded as jwt.JwtPayload;
+      User.findById(decodedToken._id)
+        .then((user) => {
           req.user = user;
           next();
-        }).catch(() => {
+        })
+        .catch(() => {
           return res.status(401).json({ msg: "Token is not valid" });
         });
-      }
-    });
-  } catch (err) {
-    console.error("something wrong with auth middleware");
-    res.status(500).json({ msg: "Server Error" });
-  }
+    }
+  });
 }
