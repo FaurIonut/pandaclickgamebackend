@@ -1,18 +1,22 @@
-import mongoose, { Schema, Model, model, ObjectId, Date } from "mongoose";
-import { hashSync, genSaltSync, compareSync } from "bcryptjs";
+import mongoose, { Schema, Document, Model, model, ObjectId } from "mongoose";
+import { hashSync, genSaltSync } from "bcryptjs";
+
+// Define the IUser interface with Document from Mongoose
 export interface IUser extends Document {
   username: string;
   email: string;
   password: string;
   role: string;
   status: string;
-  date: string;
+  date: Date;
   encryptPassword: (password: string) => string;
 }
 
+// Define the IUserModel interface for the Mongoose model
 interface IUserModel extends Model<IUser> {}
 
-const UserSchema: Schema = new Schema({
+// Create the User schema
+const UserSchema: Schema<IUser> = new Schema({
   username: {
     type: String,
     required: true,
@@ -20,6 +24,7 @@ const UserSchema: Schema = new Schema({
   email: {
     type: String,
     required: true,
+    unique: true, // Ensure email is unique
   },
   password: {
     type: String,
@@ -27,19 +32,27 @@ const UserSchema: Schema = new Schema({
   },
   role: {
     type: String,
+    default: 'user', // Set a default role
   },
-  status : {
+  status: {
     type: String,
+    default: 'active', // Set a default status
   },
-  date : {
+  date: {
     type: Date,
-  }
+    default: Date.now, // Set a default date to now
+  },
 });
 
-UserSchema.methods.encryptPassword = (password: string) =>
-  hashSync(password, genSaltSync(10));
+// Add methods to the schema
+UserSchema.methods.encryptPassword = function(password: string): string {
+  return hashSync(password, genSaltSync(10));
+};
+
+// Create the model from the schema
 const User: IUserModel = model<IUser, IUserModel>("User", UserSchema);
 
+// Define the UserData interface
 interface UserData {
   _id: ObjectId;
   username: string;
@@ -50,12 +63,10 @@ interface UserData {
   date: Date;
 }
 
-const findUserDataByEmail = async (
-  email_f: string
-): Promise<UserData[]> => {
-  return await User.find({
-    email: email_f,
-  });
+// Define a function to find users by email
+const findUserDataByEmail = async (email: string): Promise<UserData[]> => {
+  return User.find({ email }).exec();
 };
-export { findUserDataByEmail};
+
+export { findUserDataByEmail };
 export default User;

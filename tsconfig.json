@@ -11,7 +11,7 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "typeRoots": ["./node_modules/@types"],
-    "types": ["node", "moment"] // Explicitly adding 'node' and 'moment'
+    "types": ["node"]  // 'moment' removed
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
